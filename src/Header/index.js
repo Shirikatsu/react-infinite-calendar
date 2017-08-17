@@ -30,6 +30,7 @@ export default class Header extends PureComponent {
       theme,
     } = this.props;
 
+    console.log(this.props.scrollToDate)
     return (
       <div
         className={classNames(styles.root, {

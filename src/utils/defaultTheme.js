@@ -7,6 +7,9 @@ module.exports = {
   },
   headerColor: '#448AFF',
   selectionColor: '#559FFF',
+  dayFullColor: '#D9534F',
+  dayAvailableColor: '#5CB85C',
+  dayFillingColor: '#5CB85C',
   textColor: {
     active: '#FFF',
     default: '#333',

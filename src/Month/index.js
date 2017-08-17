@@ -12,6 +12,9 @@ export default class Month extends PureComponent {
       DayComponent,
       disabledDates,
       disabledDays,
+      unavailableDates,
+      availableDates,
+      fewSlotsDates,
       monthDate,
       locale,
       maxDate,
@@ -30,6 +33,7 @@ export default class Month extends PureComponent {
     const monthRows = [];
     let day = 0;
     let isDisabled = false;
+    let daySlotType = 0;
     let isToday = false;
     let date, days, dow, row;
 
@@ -55,8 +59,18 @@ export default class Month extends PureComponent {
 					maxDate && date > _maxDate ||
 					disabledDays && disabledDays.length && disabledDays.indexOf(dow) !== -1 ||
 					disabledDates && disabledDates.length && disabledDates.indexOf(date) !== -1
-				);
-
+        );
+        
+        if (!isDisabled) {
+          if (unavailableDates && unavailableDates.length && unavailableDates.indexOf(date) !== -1) {
+            daySlotType = 1;
+          } else if (availableDates && availableDates.length && availableDates.indexOf(date) !== -1) {
+            daySlotType = 2;
+          } else if (fewSlotsDates && fewSlotsDates.length && fewSlotsDates.indexOf(date) !== -1) {
+            daySlotType = 3;
+          }
+        }
+        
         days[k] = (
 					<DayComponent
 						key={`day-${day}`}
@@ -65,6 +79,7 @@ export default class Month extends PureComponent {
 						day={day}
             selected={selected}
 						isDisabled={isDisabled}
+            slotType={daySlotType}
 						isToday={isToday}
 						locale={locale}
             month={month}

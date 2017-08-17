@@ -60,6 +60,9 @@ export default class Calendar extends Component {
     DayComponent: PropTypes.func,
     disabledDates: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
     disabledDays: PropTypes.arrayOf(PropTypes.number),
+    unavailableDates: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+    manySlotsDates: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+    fewSlotsDates: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
     display: PropTypes.oneOf(['years', 'days']),
     displayOptions: PropTypes.shape({
       hideYearsOnSelect: PropTypes.bool,
@@ -102,6 +105,9 @@ export default class Calendar extends Component {
       }),
       headerColor: PropTypes.string,
       selectionColor: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+      dayFullColor: PropTypes.string,
+      dayAvailableColor: PropTypes.string,
+      dayFillingColor: PropTypes.string,
       textColor: PropTypes.shape({
         active: PropTypes.string,
         default: PropTypes.string,
@@ -160,6 +166,15 @@ export default class Calendar extends Component {
   }
   getDisabledDates(disabledDates) {
     return disabledDates && disabledDates.map((date) => format(parse(date), 'YYYY-MM-DD'));
+  }
+  getUnavailableDates(unavailableDates) {
+    return unavailableDates && unavailableDates.map((date) => format(parse(date), 'YYYY-MM-DD'));
+  }
+  getAvailableDates(availableDates) {
+    return availableDates && availableDates.map((date) => format(parse(date), 'YYYY-MM-DD'));
+  }
+  getFewSlotDates(fewSlotsDates) {
+    return fewSlotsDates && fewSlotsDates.map((date) => format(parse(date), 'YYYY-MM-DD'));
   }
   _displayOptions = {};
   getDisplayOptions(displayOptions = this.props.displayOptions) {
@@ -293,6 +308,9 @@ export default class Calendar extends Component {
     } = this.getDisplayOptions();
     const {display, isScrolling, showToday} = this.state;
     const disabledDates = this.getDisabledDates(this.props.disabledDates);
+    const unavailableDates = this.getUnavailableDates(this.props.unavailableDates);
+    const availableDates = this.getAvailableDates(this.props.manySlotsDates);
+    const fewSlotsDates = this.getFewSlotDates(this.props.fewSlotsDates);
     const locale = this.getLocale();
     const theme = this.getTheme();
     const today = this.today = startOfDay(new Date());
@@ -346,6 +364,9 @@ export default class Calendar extends Component {
               DayComponent={DayComponent}
               disabledDates={disabledDates}
               disabledDays={disabledDays}
+              unavailableDates={unavailableDates}
+              availableDates={availableDates}
+              fewSlotsDates={fewSlotsDates}
               height={height}
               isScrolling={isScrolling}
               locale={locale}

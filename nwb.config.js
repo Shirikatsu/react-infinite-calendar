@@ -18,7 +18,7 @@ module.exports = {
     plugins: [
       ['css-modules-transform', {
         generateScopedName: 'Cal__[name]__[local]',
-        "preprocessCss": "./preprocess-css.js",
+        "preprocessCss": "/Users/chris/Repositories/react-infinite-calendar/preprocess-css.js",
         "extensions": [".scss"],
         "extractCss": "./styles.css"
       }]

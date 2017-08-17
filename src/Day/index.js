@@ -5,9 +5,9 @@ import styles from './Day.scss';
 
 export default class Day extends PureComponent {
   handleClick = () => {
-    let {date, isDisabled, onClick} = this.props;
+    let {date, isDisabled, slotType, onClick} = this.props;
 
-    if (!isDisabled && typeof onClick === 'function') {
+    if (!isDisabled && slotType !== 1 && typeof onClick === 'function') {
       onClick(parse(date));
     }
   };
@@ -17,6 +17,7 @@ export default class Day extends PureComponent {
       day,
       date,
       isToday,
+      slotType,
       locale: {todayLabel},
       monthShort,
       theme: {textColor},
@@ -49,11 +50,12 @@ export default class Day extends PureComponent {
       day,
       handlers,
       isDisabled,
+      slotType,
       isHighlighted,
       isToday,
       isSelected,
       monthShort,
-      theme: {selectionColor, todayColor},
+      theme: {selectionColor, dayFullColor, dayAvailableColor, dayFillingColor, todayColor},
       year,
     } = this.props;
     let color;
@@ -64,6 +66,12 @@ export default class Day extends PureComponent {
         : selectionColor;
     } else if (isToday) {
       color = todayColor;
+    } else if (slotType == 1) {
+      color =  dayFullColor;
+    } else if (slotType == 2) {
+      color = dayAvailableColor;
+    } else if (slotType == 3) {
+      color = dayFillingColor;
     }
 
     return (
@@ -73,13 +81,14 @@ export default class Day extends PureComponent {
           [styles.today]: isToday,
           [styles.highlighted]: isHighlighted,
           [styles.selected]: isSelected,
-          [styles.disabled]: isDisabled,
+          [styles.disabled]: isDisabled || slotType == 1,
           [styles.enabled]: !isDisabled,
         }, className)}
         onClick={this.handleClick}
         data-date={date}
         {...handlers}
       >
+
         {day === 1 && <span className={styles.month}>{monthShort}</span>}
         {isToday ? <span>{day}</span> : day}
         {day === 1 &&
