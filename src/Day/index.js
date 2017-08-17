@@ -71,14 +71,18 @@ export default class Day extends PureComponent {
     } else if (slotType == 2) {
       color = dayAvailableColor;
     } else if (slotType == 3) {
-      color = dayFillingColor;
+      color = dayAvailableColor;
+    }
+    
+    if (isDisabled) {
+      color = '#AAA'
     }
 
     return (
       <li
         style={color ? {color} : null}
         className={classNames(styles.root, {
-          [styles.today]: isToday,
+          [styles.today]: isToday || slotType == 3,
           [styles.highlighted]: isHighlighted,
           [styles.selected]: isSelected,
           [styles.disabled]: isDisabled || slotType == 1,
