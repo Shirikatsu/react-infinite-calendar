@@ -1242,6 +1242,7 @@ var styles = {
     'highlighted': 'Cal__Day__highlighted',
     'today': 'Cal__Day__today',
     'disabled': 'Cal__Day__disabled',
+    'few': 'Cal__Day__few',
     'selected': 'Cal__Day__selected',
     'month': 'Cal__Day__month',
     'year': 'Cal__Day__year',
@@ -1573,7 +1574,9 @@ var Calendar = (_temp = _class = function (_Component) {
         setDisplay: this.setDisplay,
         dateFormat: locale.headerFormat,
         display: display,
-        displayDate: displayDate
+        displayDate: displayDate,
+        max: this._max,
+        min: this._min
       }, passThrough.Header, {
         __source: {
           fileName: _jsxFileName,
@@ -1585,13 +1588,13 @@ var Calendar = (_temp = _class = function (_Component) {
         'div',
         { className: styles.container.wrapper, __source: {
             fileName: _jsxFileName,
-            lineNumber: 346
+            lineNumber: 348
           },
           __self: this
         },
         showWeekdays && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__Weekdays__["a" /* default */], { weekdays: locale.weekdays, weekStartsOn: locale.weekStartsOn, theme: theme, __source: {
             fileName: _jsxFileName,
-            lineNumber: 348
+            lineNumber: 350
           },
           __self: this
         }),
@@ -1599,7 +1602,7 @@ var Calendar = (_temp = _class = function (_Component) {
           'div',
           { className: styles.container.listWrapper, __source: {
               fileName: _jsxFileName,
-              lineNumber: 350
+              lineNumber: 352
             },
             __self: this
           },
@@ -1611,7 +1614,7 @@ var Calendar = (_temp = _class = function (_Component) {
             todayLabel: locale.todayLabel.long,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 352
+              lineNumber: 354
             },
             __self: this
           }),
@@ -1644,7 +1647,7 @@ var Calendar = (_temp = _class = function (_Component) {
             width: width,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 360
+              lineNumber: 362
             },
             __self: this
           })
@@ -1671,7 +1674,7 @@ var Calendar = (_temp = _class = function (_Component) {
         }, passThrough.Years, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 390
+            lineNumber: 392
           },
           __self: this
         }))
@@ -2169,7 +2172,9 @@ var animation = {
 };
 
 
-function defaultSelectionRenderer(value, _ref) {
+var fullMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+function defaultSelectionRenderer(value, _ref, type) {
   var _this = this;
 
   var display = _ref.display,
@@ -2182,96 +2187,173 @@ function defaultSelectionRenderer(value, _ref) {
       shouldAnimate = _ref.shouldAnimate;
 
   var date = __WEBPACK_IMPORTED_MODULE_3_date_fns_parse___default()(value);
-  var values = date && [{
-    active: display === 'years',
-    handleClick: function handleClick(e) {
-      onYearClick(date, e, key);
-      setDisplay('years');
-    },
-    item: 'year',
-    title: display === 'days' ? 'Change year' : null,
-    value: date.getFullYear()
-  }, {
-    active: display === 'days',
-    handleClick: function handleClick(e) {
-      if (display !== 'days') {
-        setDisplay('days');
-      } else if (date) {
-        scrollToDate(date, -40, true);
-      }
-    },
-    item: 'day',
-    title: display === 'days' ? 'Scroll to ' + __WEBPACK_IMPORTED_MODULE_4_date_fns_format___default()(date, dateFormat, { locale: locale }) : null,
-    value: __WEBPACK_IMPORTED_MODULE_4_date_fns_format___default()(date, dateFormat, { locale: locale })
-  }];
 
-  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-    'div',
-    {
-      key: key,
-      className: styles.wrapper,
-      'aria-label': __WEBPACK_IMPORTED_MODULE_4_date_fns_format___default()(date, dateFormat + ' YYYY', { locale: locale }),
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 49
+  if (type == 1) {
+    var values = date && [{
+      active: display === 'years',
+      handleClick: function handleClick(e) {
+        onYearClick(date, e, key);
+        setDisplay('years');
       },
-      __self: this
-    },
-    values.map(function (_ref2) {
-      var _classNames;
+      item: 'year',
+      title: display === 'days' ? 'Change year' : null,
+      value: date.getFullYear()
+    }, {
+      active: display === 'days',
+      handleClick: function handleClick(e) {
+        if (display !== 'days') {
+          setDisplay('days');
+        } else if (date) {
+          scrollToDate(date, -40, true);
+        }
+      },
+      item: 'day',
+      title: display === 'days' ? 'Scroll to ' + __WEBPACK_IMPORTED_MODULE_4_date_fns_format___default()(date, dateFormat, { locale: locale }) : null,
+      value: __WEBPACK_IMPORTED_MODULE_4_date_fns_format___default()(date, dateFormat, { locale: locale })
+    }];
 
-      var handleClick = _ref2.handleClick,
-          item = _ref2.item,
-          key = _ref2.key,
-          value = _ref2.value,
-          active = _ref2.active,
-          title = _ref2.title;
-
-      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        {
-          key: item,
-          className: __WEBPACK_IMPORTED_MODULE_2_classnames___default()(styles.dateWrapper, styles[item], (_classNames = {}, _classNames[styles.active] = active, _classNames)),
-          title: title,
-          __source: {
-            fileName: _jsxFileName,
-            lineNumber: 56
-          },
-          __self: _this
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      {
+        key: key,
+        className: styles.wrapper,
+        'aria-label': __WEBPACK_IMPORTED_MODULE_4_date_fns_format___default()(date, dateFormat + ' YYYY', { locale: locale }),
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 53
         },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_1_react_transition_group_CSSTransitionGroup___default.a,
+        __self: this
+      },
+      values.map(function (_ref2) {
+        var _classNames;
+
+        var handleClick = _ref2.handleClick,
+            item = _ref2.item,
+            key = _ref2.key,
+            value = _ref2.value,
+            active = _ref2.active,
+            title = _ref2.title;
+
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
           {
-            transitionName: animation,
-            transitionEnterTimeout: 250,
-            transitionLeaveTimeout: 250,
-            transitionEnter: shouldAnimate,
-            transitionLeave: shouldAnimate,
+            key: item,
+            className: __WEBPACK_IMPORTED_MODULE_2_classnames___default()(styles.dateWrapper, styles[item], (_classNames = {}, _classNames[styles.active] = active, _classNames)),
+            title: title,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 63
+              lineNumber: 60
             },
             __self: _this
           },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'span',
+            __WEBPACK_IMPORTED_MODULE_1_react_transition_group_CSSTransitionGroup___default.a,
             {
-              key: item + '-' + value,
-              className: styles.date,
-              'aria-hidden': true,
-              onClick: handleClick,
+              transitionName: animation,
+              transitionEnterTimeout: 250,
+              transitionLeaveTimeout: 250,
+              transitionEnter: shouldAnimate,
+              transitionLeave: shouldAnimate,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 70
+                lineNumber: 67
               },
               __self: _this
             },
-            value
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'span',
+              {
+                key: item + '-' + value,
+                className: styles.date,
+                'aria-hidden': true,
+                onClick: handleClick,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 74
+                },
+                __self: _this
+              },
+              value
+            )
           )
-        )
-      );
-    })
-  );
+        );
+      })
+    );
+  } else {
+    var _values = date && [{
+      active: display === 'years',
+      item: 'year',
+      value: date.getFullYear()
+    }, {
+      active: display === 'days',
+      item: 'day',
+      value: fullMonths[date.getMonth()]
+    }];
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      {
+        key: key,
+        className: styles.wrapper,
+        'aria-label': value,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 103
+        },
+        __self: this
+      },
+      _values.map(function (_ref3) {
+        var _classNames2;
+
+        var item = _ref3.item,
+            key = _ref3.key,
+            value = _ref3.value,
+            active = _ref3.active;
+
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          {
+            key: item,
+            className: __WEBPACK_IMPORTED_MODULE_2_classnames___default()(styles.dateWrapper, styles[item], (_classNames2 = {}, _classNames2[styles.active] = active, _classNames2)),
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 110
+            },
+            __self: _this
+          },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_1_react_transition_group_CSSTransitionGroup___default.a,
+            {
+              transitionName: animation,
+              transitionEnterTimeout: 250,
+              transitionLeaveTimeout: 250,
+              transitionEnter: shouldAnimate,
+              transitionLeave: shouldAnimate,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 116
+              },
+              __self: _this
+            },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'span',
+              {
+                key: item + '-' + value,
+                className: styles.date,
+                'aria-hidden': true,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 123
+                },
+                __self: _this
+              },
+              value
+            )
+          )
+        );
+      })
+    );
+  }
 }
 
 /***/ }),
@@ -4407,32 +4489,68 @@ var Day = function (_PureComponent) {
         'span',
         { className: styles.month, __source: {
             fileName: _jsxFileName,
-            lineNumber: 96
+            lineNumber: 97
           },
           __self: this
         },
-        monthShort
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { style: { fontWeight: '400' }, __source: {
+              fileName: _jsxFileName,
+              lineNumber: 97
+            },
+            __self: this
+          },
+          monthShort
+        )
       ),
       isToday ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'span',
         {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 97
+            lineNumber: 98
+          },
+          __self: this
+        },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { style: { fontWeight: '400' }, __source: {
+              fileName: _jsxFileName,
+              lineNumber: 98
+            },
+            __self: this
+          },
+          day
+        )
+      ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { style: { fontWeight: '400' }, __source: {
+            fileName: _jsxFileName,
+            lineNumber: 98
           },
           __self: this
         },
         day
-      ) : day,
+      ),
       day === 1 && currentYear !== year && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'span',
         { className: styles.year, __source: {
             fileName: _jsxFileName,
-            lineNumber: 100
+            lineNumber: 101
           },
           __self: this
         },
-        year
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { style: { fontWeight: '400' }, __source: {
+              fileName: _jsxFileName,
+              lineNumber: 101
+            },
+            __self: this
+          },
+          year
+        )
       ),
       isSelected && this.renderSelection()
     );
@@ -4690,10 +4808,12 @@ var Header = (_temp = _class = function (_PureComponent) {
         blank = _props.locale.blank,
         selected = _props.selected,
         renderSelection = _props.renderSelection,
+        min = _props.min,
+        max = _props.max,
         theme = _props.theme;
 
 
-    console.log(this.props.scrollToDate);
+    var isOnlyShowingAMonth = min.getMonth() === max.getMonth();
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
       {
@@ -4704,15 +4824,15 @@ var Header = (_temp = _class = function (_PureComponent) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 35
+          lineNumber: 37
         },
         __self: this
       },
-      selected && renderSelection(selected, this.props) || __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      selected && renderSelection(selected, this.props) || isOnlyShowingAMonth && renderSelection(min, this.props) || __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: __WEBPACK_IMPORTED_MODULE_4_classnames___default()(styles.wrapper, styles.blank), __source: {
             fileName: _jsxFileName,
-            lineNumber: 46
+            lineNumber: 48
           },
           __self: this
         },

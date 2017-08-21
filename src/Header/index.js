@@ -27,10 +27,12 @@ export default class Header extends PureComponent {
       locale: {blank},
       selected,
       renderSelection,
+      min,
+      max,
       theme,
     } = this.props;
 
-    console.log(this.props.scrollToDate)
+    var isOnlyShowingAMonth = min.getMonth() === max.getMonth()
     return (
       <div
         className={classNames(styles.root, {
@@ -42,7 +44,7 @@ export default class Header extends PureComponent {
         }}
       >
         {
-          selected && renderSelection(selected, this.props) ||
+          selected && renderSelection(selected, this.props) || isOnlyShowingAMonth && renderSelection(min, this.props)||
           <div className={classNames(styles.wrapper, styles.blank)}>{blank}</div>
         }
       </div>

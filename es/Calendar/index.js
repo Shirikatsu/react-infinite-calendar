@@ -365,7 +365,9 @@ var Calendar = function (_Component) {
         setDisplay: this.setDisplay,
         dateFormat: locale.headerFormat,
         display: display,
-        displayDate: displayDate
+        displayDate: displayDate,
+        max: this._max,
+        min: this._min
       }, passThrough.Header)),
       React.createElement(
         'div',

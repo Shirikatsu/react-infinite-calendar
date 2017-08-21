@@ -40,10 +40,12 @@ var Header = (_temp = _class = function (_PureComponent) {
         blank = _props.locale.blank,
         selected = _props.selected,
         renderSelection = _props.renderSelection,
+        min = _props.min,
+        max = _props.max,
         theme = _props.theme;
 
 
-    console.log(this.props.scrollToDate);
+    var isOnlyShowingAMonth = min.getMonth() === max.getMonth();
     return React.createElement(
       'div',
       {
@@ -53,7 +55,7 @@ var Header = (_temp = _class = function (_PureComponent) {
           color: theme.textColor.active
         }
       },
-      selected && renderSelection(selected, this.props) || React.createElement(
+      selected && renderSelection(selected, this.props) || isOnlyShowingAMonth && renderSelection(min, this.props) || React.createElement(
         'div',
         { className: classNames(styles.wrapper, styles.blank) },
         blank

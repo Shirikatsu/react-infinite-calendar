@@ -340,6 +340,8 @@ export default class Calendar extends Component {
             dateFormat={locale.headerFormat}
             display={display}
             displayDate={displayDate}
+            max={this._max}
+            min={this._min}
             {...passThrough.Header}
           />
         }

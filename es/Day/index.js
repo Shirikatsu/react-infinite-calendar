@@ -140,17 +140,33 @@ var Day = function (_PureComponent) {
       day === 1 && React.createElement(
         'span',
         { className: styles.month },
-        monthShort
+        React.createElement(
+          'div',
+          { style: { fontWeight: '400' } },
+          monthShort
+        )
       ),
       isToday ? React.createElement(
         'span',
         null,
+        React.createElement(
+          'div',
+          { style: { fontWeight: '400' } },
+          day
+        )
+      ) : React.createElement(
+        'div',
+        { style: { fontWeight: '400' } },
         day
-      ) : day,
+      ),
       day === 1 && currentYear !== year && React.createElement(
         'span',
         { className: styles.year },
-        year
+        React.createElement(
+          'div',
+          { style: { fontWeight: '400' } },
+          year
+        )
       ),
       isSelected && this.renderSelection()
     );
